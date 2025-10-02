@@ -10,24 +10,28 @@ export const LyricDisplay = ({ lyrics, keywords }: LyricDisplayProps) => {
 
   return (
     <div className="mt-8 space-y-6">
-      <div className="bg-white p-6 rounded-lg shadow-lg">
-        <h2 className="text-2xl font-bold text-gray-800 mb-4">Your Lyric Snippet</h2>
-        <div className="space-y-2">
+      {/* Lyrics Card with enhanced design */}
+      <div className="bg-gradient-to-br from-white to-gray-50 p-8 rounded-2xl shadow-2xl border border-gray-100">
+        <h2 className="text-3xl font-bold text-gray-900 mb-6 border-b-2 border-blue-500 pb-3">
+          Your Lyric Snippet ✨
+        </h2>
+        <div className="space-y-3">
           {lyrics.map((line, index) => (
-            <p key={index} className="text-lg text-gray-700 leading-relaxed">
+            <p key={index} className="text-xl text-gray-800 leading-relaxed font-medium italic">
               {line}
             </p>
           ))}
         </div>
       </div>
 
-      <div className="bg-gray-50 p-4 rounded-lg">
-        <h3 className="text-sm font-semibold text-gray-600 mb-2">Keywords Used:</h3>
-        <div className="flex flex-wrap gap-2">
+      {/* Keywords Card with better spacing */}
+      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-xl border border-blue-200">
+        <h3 className="text-base font-bold text-gray-700 mb-3">🎵 Keywords Used:</h3>
+        <div className="flex flex-wrap gap-3">
           {keywords.map((keyword, index) => (
             <span
-              key={index}
-              className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm"
+              key={`keyword-${index}-${keyword}`}
+              className="px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-full text-sm font-semibold shadow-md hover:shadow-lg transition-shadow"
             >
               {keyword}
             </span>

@@ -43,40 +43,60 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8 px-4">
-      <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl font-bold text-center text-gray-800 mb-8">
-          Lyric Snippet Generator
-        </h1>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-100 py-12 px-4">
+      <div className="max-w-5xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <h1 className="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 mb-3">
+            ✨ Lyric Snippet Generator
+          </h1>
+          <p className="text-gray-600 text-lg">Create beautiful lyrics with the power of randomness</p>
+        </div>
 
-        <div className="bg-white rounded-xl shadow-xl p-8 space-y-6">
+        {/* Main Card */}
+        <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-2xl p-10 space-y-8 border border-white/50">
           {/* Step 1: Theme Selection */}
           <ThemeSelector selectedTheme={theme} onThemeChange={setTheme} />
 
+          {/* Divider */}
+          {theme && <div className="border-t-2 border-gray-200"></div>}
+
           {/* Step 2: Dice Rolling */}
           {theme && diceResults.length < 3 && (
-            <DiceRoller onRoll={handleDiceRoll} rollCount={diceResults.length + 1} />
+            <DiceRoller
+              onRoll={handleDiceRoll}
+              rollCount={diceResults.length + 1}
+              diceHistory={diceResults}
+            />
           )}
+
+          {/* Divider */}
+          {diceResults.length === 3 && <div className="border-t-2 border-gray-200"></div>}
 
           {/* Step 3: Length Selection */}
           {diceResults.length === 3 && (
             <LengthSelector selectedLength={length} onLengthChange={setLength} />
           )}
 
+          {/* Divider */}
+          {diceResults.length === 3 && keywords.length === 3 && (
+            <div className="border-t-2 border-gray-200"></div>
+          )}
+
           {/* Step 4: Generate Button */}
           {diceResults.length === 3 && keywords.length === 3 && (
-            <div className="flex gap-4">
+            <div className="flex gap-4 justify-center">
               <button
                 onClick={handleGenerate}
-                className="px-8 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-semibold"
+                className="px-10 py-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-2xl hover:from-green-600 hover:to-emerald-700 transition-all shadow-xl hover:shadow-2xl font-bold text-lg transform hover:scale-105"
               >
-                Generate Lyrics
+                ✨ Generate Lyrics
               </button>
               <button
                 onClick={handleReset}
-                className="px-8 py-3 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors font-semibold"
+                className="px-10 py-4 bg-gradient-to-r from-gray-500 to-gray-600 text-white rounded-2xl hover:from-gray-600 hover:to-gray-700 transition-all shadow-lg hover:shadow-xl font-bold text-lg transform hover:scale-105"
               >
-                Start Over
+                🔄 Start Over
               </button>
             </div>
           )}
