@@ -4,6 +4,8 @@ import { DiceRoller } from './components/DiceRoller';
 import { LengthSelector } from './components/LengthSelector';
 import { LyricDisplay } from './components/LyricDisplay';
 import { getKeywordByDiceRoll, generateSimpleLyric } from './utils/lyricGenerator';
+import { Card } from './components/ui/Card';
+import { Button } from './components/ui/Button';
 
 function App() {
   const {
@@ -43,64 +45,76 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-100 py-12 px-4">
-      <div className="max-w-5xl mx-auto">
+    <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 mb-3">
-            ✨ Lyric Snippet Generator
+        <div className="text-center mb-10 animate-fade-in">
+          <h1 className="text-4xl sm:text-5xl font-display font-bold text-primary-700 mb-3 tracking-tight">
+            Lyric Snippet Generator
           </h1>
-          <p className="text-gray-600 text-lg">Create beautiful lyrics with the power of randomness</p>
+          <p className="text-gray-600 text-base sm:text-lg font-medium">
+            Create beautiful lyrics with the power of randomness
+          </p>
         </div>
 
         {/* Main Card */}
-        <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-2xl p-10 space-y-8 border border-white/50">
+        <Card className="space-y-6 animate-slide-up">
           {/* Step 1: Theme Selection */}
-          <ThemeSelector selectedTheme={theme} onThemeChange={setTheme} />
+          <div>
+            <ThemeSelector selectedTheme={theme} onThemeChange={setTheme} />
+          </div>
 
           {/* Divider */}
-          {theme && <div className="border-t-2 border-gray-200"></div>}
+          {theme && <div className="border-t border-gray-200/60"></div>}
 
           {/* Step 2: Dice Rolling */}
           {theme && diceResults.length < 3 && (
-            <DiceRoller
-              onRoll={handleDiceRoll}
-              rollCount={diceResults.length + 1}
-              diceHistory={diceResults}
-            />
+            <div>
+              <DiceRoller
+                onRoll={handleDiceRoll}
+                rollCount={diceResults.length + 1}
+                diceHistory={diceResults}
+              />
+            </div>
           )}
 
           {/* Divider */}
-          {diceResults.length === 3 && <div className="border-t-2 border-gray-200"></div>}
+          {diceResults.length === 3 && <div className="border-t border-gray-200/60"></div>}
 
           {/* Step 3: Length Selection */}
           {diceResults.length === 3 && (
-            <LengthSelector selectedLength={length} onLengthChange={setLength} />
+            <div>
+              <LengthSelector selectedLength={length} onLengthChange={setLength} />
+            </div>
           )}
 
           {/* Divider */}
           {diceResults.length === 3 && keywords.length === 3 && (
-            <div className="border-t-2 border-gray-200"></div>
+            <div className="border-t border-gray-200/60"></div>
           )}
 
           {/* Step 4: Generate Button */}
           {diceResults.length === 3 && keywords.length === 3 && (
-            <div className="flex gap-4 justify-center">
-              <button
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <Button
                 onClick={handleGenerate}
-                className="px-10 py-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-2xl hover:from-green-600 hover:to-emerald-700 transition-all shadow-xl hover:shadow-2xl font-bold text-lg transform hover:scale-105"
+                variant="accent"
+                size="lg"
+                className="w-full sm:w-auto"
               >
                 ✨ Generate Lyrics
-              </button>
-              <button
+              </Button>
+              <Button
                 onClick={handleReset}
-                className="px-10 py-4 bg-gradient-to-r from-gray-500 to-gray-600 text-white rounded-2xl hover:from-gray-600 hover:to-gray-700 transition-all shadow-lg hover:shadow-xl font-bold text-lg transform hover:scale-105"
+                variant="secondary"
+                size="lg"
+                className="w-full sm:w-auto"
               >
                 🔄 Start Over
-              </button>
+              </Button>
             </div>
           )}
-        </div>
+        </Card>
 
         {/* Step 5: Display Lyrics */}
         <LyricDisplay lyrics={generatedLyrics} keywords={keywords} />
