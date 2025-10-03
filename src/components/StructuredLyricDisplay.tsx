@@ -1,22 +1,53 @@
 import { Card } from './ui/Card';
-import { Music, Tag, Layers, Repeat, GitBranch } from 'lucide-react';
+import { Button } from './ui/Button';
+import { Music, Tag, Layers, Repeat, GitBranch, CheckCircle, AlertCircle, RefreshCw } from 'lucide-react';
+import type { RhymeScheme } from '../types';
 
 interface StructuredLyricDisplayProps {
   verse: string[];
   chorus: string[];
   bridge: string[];
   keywords: string[];
+  rhymeScheme?: RhymeScheme | null;
+  rhymeValidation?: {
+    valid: boolean;
+    matches: number;
+    total: number;
+  } | null;
+  onRegenerate?: () => void;
 }
 
 export const StructuredLyricDisplay = ({
   verse,
   chorus,
   bridge,
-  keywords
+  keywords,
+  rhymeScheme,
+  rhymeValidation,
+  onRegenerate
 }: StructuredLyricDisplayProps) => {
   if (verse.length === 0 && chorus.length === 0 && bridge.length === 0) {
     return null;
   }
+
+  const getRhymeLabel = (index: number): string => {
+    if (!rhymeScheme || rhymeScheme === 'free') return '';
+
+    if (rhymeScheme === 'AABB') {
+      // AABB pattern: 0,1 = A, 2,3 = B, 4,5 = C, 6,7 = D
+      const pairIndex = Math.floor(index / 2);
+      const labels = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+      return labels[pairIndex % labels.length];
+    } else if (rhymeScheme === 'ABAB') {
+      // ABAB pattern: 0,2 = A, 1,3 = B, 4,6 = C, 5,7 = D
+      const groupIndex = Math.floor(index / 4);
+      const posInGroup = index % 4;
+      const baseLabels = ['A', 'C', 'E', 'G'];
+      const altLabels = ['B', 'D', 'F', 'H'];
+      return posInGroup % 2 === 0 ? baseLabels[groupIndex] : altLabels[groupIndex];
+    }
+    return '';
+  };
 
   const SectionHeader = ({
     icon: Icon,
@@ -35,23 +66,36 @@ export const StructuredLyricDisplay = ({
 
   const LyricSection = ({
     lines,
-    startDelay = 0
+    startDelay = 0,
+    startIndex = 0
   }: {
     lines: string[];
     startDelay?: number;
+    startIndex?: number;
   }) => (
     <div className="space-y-3">
-      {lines.map((line, index) => (
-        <p
-          key={index}
-          className="text-lg md:text-xl text-gray-800 leading-relaxed font-display italic hover:text-primary-700 transition-colors animate-slide-up"
-          style={{
-            animationDelay: `${startDelay + index * 80}ms`,
-          }}
-        >
-          {line}
-        </p>
-      ))}
+      {lines.map((line, index) => {
+        const rhymeLabel = getRhymeLabel(startIndex + index);
+        return (
+          <div key={index} className="flex items-start gap-3 group">
+            {rhymeLabel && (
+              <span className="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-gradient-to-br from-primary-500 to-primary-600 text-white text-sm font-bold rounded-full shadow-sm group-hover:scale-110 transition-transform">
+                {rhymeLabel}
+              </span>
+            )}
+            <p
+              className={`flex-1 text-lg md:text-xl text-gray-800 leading-relaxed font-display italic hover:text-primary-700 transition-colors animate-slide-up ${
+                !rhymeLabel ? 'ml-0' : ''
+              }`}
+              style={{
+                animationDelay: `${startDelay + index * 80}ms`,
+              }}
+            >
+              {line}
+            </p>
+          </div>
+        );
+      })}
     </div>
   );
 
@@ -71,6 +115,45 @@ export const StructuredLyricDisplay = ({
           </div>
 
           <div className="space-y-8">
+            {/* Rhyme Validation Feedback */}
+            {rhymeValidation && (
+              <div
+                className={`flex items-start gap-3 p-4 rounded-xl border ${
+                  rhymeValidation.valid
+                    ? 'bg-green-50 border-green-200'
+                    : 'bg-amber-50 border-amber-200'
+                }`}
+              >
+                {rhymeValidation.valid ? (
+                  <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                ) : (
+                  <AlertCircle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+                )}
+                <div className="flex-1">
+                  <p
+                    className={`text-sm font-semibold ${
+                      rhymeValidation.valid ? 'text-green-800' : 'text-amber-800'
+                    }`}
+                  >
+                    {rhymeValidation.valid
+                      ? `✓ Rhyme scheme matches! (${rhymeValidation.matches}/${rhymeValidation.total} rhymes)`
+                      : `⚠ Some rhymes may not match perfectly (${rhymeValidation.matches}/${rhymeValidation.total} rhymes)`}
+                  </p>
+                  {!rhymeValidation.valid && onRegenerate && (
+                    <Button
+                      onClick={onRegenerate}
+                      variant="secondary"
+                      size="sm"
+                      className="mt-2"
+                    >
+                      <RefreshCw className="w-4 h-4 mr-2" />
+                      Try Again
+                    </Button>
+                  )}
+                </div>
+              </div>
+            )}
+
             {/* Verse Section */}
             {verse.length > 0 && (
               <div>
@@ -79,7 +162,7 @@ export const StructuredLyricDisplay = ({
                   title="Verse"
                   color="border-blue-300 text-blue-700"
                 />
-                <LyricSection lines={verse} startDelay={0} />
+                <LyricSection lines={verse} startDelay={0} startIndex={0} />
               </div>
             )}
 
@@ -92,7 +175,7 @@ export const StructuredLyricDisplay = ({
                   color="border-purple-300 text-purple-700"
                 />
                 <div className="bg-gradient-to-r from-purple-50/50 to-pink-50/50 p-4 rounded-xl border border-purple-100">
-                  <LyricSection lines={chorus} startDelay={verse.length * 80} />
+                  <LyricSection lines={chorus} startDelay={verse.length * 80} startIndex={verse.length} />
                 </div>
               </div>
             )}
@@ -105,7 +188,7 @@ export const StructuredLyricDisplay = ({
                   title="Bridge"
                   color="border-emerald-300 text-emerald-700"
                 />
-                <LyricSection lines={bridge} startDelay={(verse.length + chorus.length) * 80} />
+                <LyricSection lines={bridge} startDelay={(verse.length + chorus.length) * 80} startIndex={verse.length + chorus.length} />
               </div>
             )}
           </div>

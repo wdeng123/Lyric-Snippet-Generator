@@ -8,8 +8,10 @@ import { RhymeSchemeSelector } from './components/RhymeSchemeSelector';
 import { KeywordCustomizer } from './components/KeywordCustomizer';
 import { LyricDisplay } from './components/LyricDisplay';
 import { StructuredLyricDisplay } from './components/StructuredLyricDisplay';
+import { ExportPanel } from './components/ExportPanel';
 import { getKeywordByDiceRoll, generateSimpleLyric } from './utils/lyricGenerator';
 import { generateStructuredLyrics } from './utils/structuredGenerator';
+import { validateRhymeScheme } from './utils/rhymeHelper';
 import { Card } from './components/ui/Card';
 import { Button } from './components/ui/Button';
 
@@ -39,6 +41,11 @@ function App() {
     chorus: string[];
     bridge: string[];
   } | null>(null);
+  const [rhymeValidation, setRhymeValidation] = useState<{
+    valid: boolean;
+    matches: number;
+    total: number;
+  } | null>(null);
 
   // Phase 2: Always use structured mode
   const useStructuredMode = true;
@@ -55,20 +62,45 @@ function App() {
     }
   };
 
-  const handleGenerate = () => {
+  const handleGenerate = async () => {
     // Combine dice keywords with custom keywords
     const allKeywords = [...keywords, ...customKeywords];
 
     if (useStructuredMode) {
-      // Structured mode requires 5 keywords (or at least 1)
-      if (allKeywords.length >= 1 && style) {
-        const lyrics = generateStructuredLyrics(allKeywords, style);
-        setStructuredLyrics(lyrics);
+      if (!style) {
+        alert('Please select a music style first!');
+        return;
+      }
+      if (!rhymeScheme) {
+        alert('Please select a rhyme scheme first!');
+        return;
+      }
+      if (allKeywords.length < 1) {
+        alert('Please roll the dice at least once to get keywords!');
+        return;
+      }
+
+      if (allKeywords.length < 4) {
+        const proceed = confirm(
+          `You have ${allKeywords.length} keyword${allKeywords.length === 1 ? '' : 's'}. ` +
+          `For best results, roll dice at least 4 times (recommended 5). ` +
+          `Continue anyway?`
+        );
+        if (!proceed) return;
+      }
+
+      const lyrics = await generateStructuredLyrics(allKeywords, style, rhymeScheme);
+      setStructuredLyrics(lyrics);
+
+      // Validate rhyme scheme if not 'free'
+      if (rhymeScheme !== 'free') {
+        const allLines = [...lyrics.verse, ...lyrics.chorus, ...lyrics.bridge];
+        const validation = await validateRhymeScheme(allLines, rhymeScheme);
+        setRhymeValidation(validation);
       } else {
-        alert('Please select a theme, music style, and roll dice at least once!');
+        setRhymeValidation(null);
       }
     } else {
-      // Simple mode requires 3 keywords
       if (allKeywords.length >= 3 && theme) {
         const lyrics = generateSimpleLyric(allKeywords.slice(0, 3), length);
         setGeneratedLyrics(lyrics);
@@ -82,6 +114,7 @@ function App() {
     reset();
     setCustomKeywords([]);
     setStructuredLyrics(null);
+    setRhymeValidation(null);
   };
 
   const maxRolls = useStructuredMode ? 5 : 3;
@@ -197,12 +230,33 @@ function App() {
 
         {/* Step 8: Display Lyrics */}
         {useStructuredMode && structuredLyrics ? (
-          <StructuredLyricDisplay
-            verse={structuredLyrics.verse}
-            chorus={structuredLyrics.chorus}
-            bridge={structuredLyrics.bridge}
-            keywords={[...keywords, ...customKeywords]}
-          />
+          <>
+            <div id="lyrics-display">
+              <StructuredLyricDisplay
+                verse={structuredLyrics.verse}
+                chorus={structuredLyrics.chorus}
+                bridge={structuredLyrics.bridge}
+                keywords={[...keywords, ...customKeywords]}
+                rhymeScheme={rhymeScheme}
+                rhymeValidation={rhymeValidation}
+                onRegenerate={handleGenerate}
+              />
+            </div>
+            {theme && style && rhymeScheme && (
+              <ExportPanel
+                lyrics={structuredLyrics}
+                metadata={{
+                  theme,
+                  style,
+                  rhymeScheme,
+                  diceRolls: diceResults,
+                  keywords: [...keywords, ...customKeywords],
+                  generatedAt: new Date().toLocaleString(),
+                }}
+                printElementId="lyrics-display"
+              />
+            )}
+          </>
         ) : (
           <LyricDisplay lyrics={generatedLyrics} keywords={keywords} />
         )}
