@@ -1,0 +1,104 @@
+{
+  "folk": {
+    "verse": [
+      "The {keyword} in my heart",
+      "Where {keyword} meets the sky",
+      "Through the {keyword} I find my way",
+      "Simple {keyword} in the light",
+      "Every {keyword} tells a tale",
+      "Walking through the {keyword} alone",
+      "Memories of {keyword} remain",
+      "Beneath the {keyword} I stand",
+      "When the {keyword} calls my name",
+      "In the shadow of {keyword}",
+      "With every {keyword} that passes by",
+      "The {keyword} never fades away"
+    ],
+    "chorus": [
+      "Oh, the {keyword} in my soul",
+      "{Keyword} will guide me home",
+      "I carry {keyword} with me",
+      "The {keyword} sets me free",
+      "{Keyword}, {keyword}, always near",
+      "In my heart, the {keyword} stays",
+      "Forever {keyword}, forever true",
+      "{Keyword} is all I need"
+    ],
+    "bridge": [
+      "And when the {keyword} fades to gray",
+      "I'll remember {keyword} today",
+      "Through the years, the {keyword} remains",
+      "Nothing changes {keyword} this way",
+      "Let the {keyword} wash over me",
+      "In silence, {keyword} speaks to me"
+    ]
+  },
+  "pop": {
+    "verse": [
+      "{Keyword} makes me feel alive",
+      "Dancing with the {keyword} tonight",
+      "I can feel the {keyword} inside",
+      "Every {keyword} brings me higher",
+      "We're chasing {keyword} under lights",
+      "The {keyword} is pumping through my veins",
+      "Can't stop this {keyword} energy",
+      "Living for the {keyword} now",
+      "When {keyword} takes control",
+      "Feeling {keyword} in the air",
+      "This {keyword} won't let me down",
+      "We're riding on this {keyword} wave"
+    ],
+    "chorus": [
+      "{Keyword}, {keyword}, take me away",
+      "We're gonna shine like {keyword}",
+      "Feel the {keyword}, yeah, feel it now",
+      "{Keyword} is all we need tonight",
+      "Can't deny this {keyword} feeling",
+      "{Keyword}, {keyword}, here we go",
+      "Let the {keyword} set us free",
+      "We're dancing with {keyword} forever"
+    ],
+    "bridge": [
+      "And nothing's gonna stop this {keyword}",
+      "We're breaking through with {keyword} power",
+      "Let {keyword} light up the night",
+      "This {keyword} is our destiny",
+      "Feel the rush of {keyword} now",
+      "Together with this {keyword} sound"
+    ]
+  },
+  "rap": {
+    "verse": [
+      "{Keyword} on my mind, yeah",
+      "Spitting {keyword}, no lie",
+      "I'm bringing {keyword} to the game",
+      "Got that {keyword} in my flow",
+      "Real {keyword}, real talk",
+      "They don't know about my {keyword}",
+      "Level up with {keyword} daily",
+      "This {keyword} can't be stopped",
+      "From the ground up, {keyword} built",
+      "Keep it real with the {keyword}",
+      "Stack that {keyword}, make it count",
+      "Grinding hard for this {keyword}"
+    ],
+    "chorus": [
+      "{Keyword}, yeah, {keyword}, let's go",
+      "We stay true to the {keyword}",
+      "{Keyword} running through the block",
+      "Can't fake this {keyword} energy",
+      "{Keyword}, {keyword}, that's the truth",
+      "Living by the {keyword} code",
+      "Straight {keyword}, no cap",
+      "This {keyword} is how we do"
+    ],
+    "bridge": [
+      "And when they doubt the {keyword}",
+      "We prove them wrong with {keyword}",
+      "Rise above with {keyword} strength",
+      "This {keyword} is our foundation",
+      "Never quit on {keyword}, nah",
+      "Keep pushing with that {keyword}"
+    ]
+  }
+}

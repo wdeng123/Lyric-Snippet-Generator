@@ -1,5 +1,5 @@
 import type { Theme } from '../types';
-import { Music, Heart, Sprout } from 'lucide-react';
+import { Music, Heart, Sprout, Briefcase, Users, Compass } from 'lucide-react';
 
 interface ThemeSelectorProps {
   selectedTheme: Theme | null;
@@ -21,11 +21,26 @@ const themeConfig: Record<Theme, { icon: typeof Heart; emoji: string; color: str
     icon: Music,
     emoji: '🚀',
     color: 'from-primary-500 to-indigo-500'
+  },
+  career: {
+    icon: Briefcase,
+    emoji: '💼',
+    color: 'from-slate-600 to-gray-700'
+  },
+  friendship: {
+    icon: Users,
+    emoji: '🤝',
+    color: 'from-amber-500 to-orange-500'
+  },
+  journey: {
+    icon: Compass,
+    emoji: '🧭',
+    color: 'from-cyan-500 to-blue-600'
   }
 };
 
 export const ThemeSelector = ({ selectedTheme, onThemeChange }: ThemeSelectorProps) => {
-  const themes: Theme[] = ['love', 'nature', 'growth'];
+  const themes: Theme[] = ['love', 'nature', 'growth', 'career', 'friendship', 'journey'];
 
   return (
     <div className="space-y-4">

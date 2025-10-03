@@ -1,5 +1,8 @@
 {
   "love": ["heartbeat", "sunrise", "whisper", "forever", "touch", "starlight"],
   "nature": ["mountain", "ocean", "breeze", "rainfall", "meadow", "sunset"],
-  "growth": ["journey", "wisdom", "courage", "chapter", "phoenix", "horizon"]
+  "growth": ["journey", "wisdom", "courage", "chapter", "phoenix", "horizon"],
+  "career": ["ambition", "deadline", "ladder", "office", "network", "promotion"],
+  "friendship": ["laughter", "loyalty", "memories", "distance", "reunion", "secrets"],
+  "journey": ["backpack", "compass", "highway", "passport", "footprints", "arrival"]
 }

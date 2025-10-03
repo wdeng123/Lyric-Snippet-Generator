@@ -5,10 +5,11 @@ import { Button } from './ui/Button';
 interface DiceRollerProps {
   onRoll: (result: number) => void;
   rollCount: number;
+  maxRolls?: number;
   diceHistory?: number[];
 }
 
-export const DiceRoller = ({ onRoll, rollCount, diceHistory = [] }: DiceRollerProps) => {
+export const DiceRoller = ({ onRoll, rollCount, maxRolls = 5, diceHistory = [] }: DiceRollerProps) => {
   const [result, setResult] = useState<number | null>(null);
   const [isRolling, setIsRolling] = useState(false);
 
@@ -34,7 +35,7 @@ export const DiceRoller = ({ onRoll, rollCount, diceHistory = [] }: DiceRollerPr
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold text-gray-800">
-        Roll Dice ({rollCount}/3)
+        Roll Dice ({rollCount}/{maxRolls})
       </h2>
 
       <div className="flex items-center gap-4 flex-wrap">
