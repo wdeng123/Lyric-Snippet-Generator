@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 import { useLyricStore } from './store/useLyricStore';
 import { ThemeSelector } from './components/ThemeSelector';
 import { DiceRoller } from './components/DiceRoller';
@@ -261,6 +262,7 @@ function App() {
           <LyricDisplay lyrics={generatedLyrics} keywords={keywords} />
         )}
       </div>
+      <SpeedInsights />
     </div>
   );
 }
